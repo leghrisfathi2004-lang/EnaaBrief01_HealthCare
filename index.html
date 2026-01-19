@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <title>Brief01 HealthCare</title>
 </head>
 
 <body class="w-screen h-screen bg-[url('./images/HealthCare_background.jpg')] bg-cover bg-center bg-no-repeat flex flex-row justify-end items-center">
-    <!-- first part: show the requests-->
+    <!-- first part------------------------------------------------------------------------------>
     <div id="list" class="hidden h-full flex flex-col justify-center items-center gap-6">
+        
         <div class="w-full h-[60%] bg-[#86C4C1] mr-10 rounded-xl shadow-lg">
             <table class="w-full text-left rounded-xl text-sm border-[#E5E7EB]">
                 <thead class="bg-[#6DA9A6] text-lg uppercase text-white border-collapse">
                     <tr>
-                        <th class="px-6 py-4 font-medium rounded-tl-xl">Full Name</th>
+                        <th class="px-6 py-4 font-medium rounded-tl-xl">ID</th>
+                        <th class="px-6 py-4 font-medium">Full Name</th>
                         <th class="px-6 py-4 font-medium">Telephone</th>
                         <th class="px-6 py-4 font-medium">Email</th>
                         <th class="px-6 py-4 font-medium">Reason</th>
@@ -24,64 +27,26 @@
                     </tr>
                 </thead>
                 <tbody id="tbody">
-                    <!--just for testing should remove in final-->
-                    <tr class="border-b border-gray-300 hover:bg-[#99D2CF]" >
-                        <td class="px-6 py-4 align-top">full name</td>
-                        <td class="px-6 py-4 align-top">1234567890</td>
-                        <td class="px-6 py-4 align-top">gmailgmail@gmail.com</td>
-                        <td class="px-6 py-4 align-top">consulation</td>
-                        <td class="px-6 py-4 align-top">13/01/2026</td>
-                        <td  class="text-xl text-center">
-                            <button>
-                                <i class="pr-10 fa-solid fa-trash-can transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
-                            <button>
-                                <i class="fa-solid fa-pen-to-square transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-300 hover:bg-[#99D2CF]">
-                        <td class="px-6 py-4 align-top">full name</td>
-                        <td class="px-6 py-4 align-top">1234567890</td>
-                        <td class="px-6 py-4 align-top">gmailgmail@gmail.com</td>
-                        <td class="px-6 py-4 align-top">consulation</td>
-                        <td class="px-6 py-4 align-top">13/01/2026</td>
-                        <td  class="text-xl text-center">
-                            <button>
-                                <i class="pr-10 fa-solid fa-trash-can transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
-                            <button>
-                                <i class="fa-solid fa-pen-to-square transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-300 hover:bg-[#99D2CF]" >
-                        <td class="px-6 py-4 align-top">full name</td>
-                        <td class="px-6 py-4 align-top">1234567890</td>
-                        <td class="px-6 py-4 align-top">gmailgmail@gmail.com</td>
-                        <td class="px-6 py-4 align-top">consulation</td>
-                        <td class="px-6 py-4 align-top">13/01/2026</td>
-                        <td  class="text-xl text-center">
-                            <button>
-                                <i class="pr-10 fa-solid fa-trash-can transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
-                            <button>
-                                <i class="fa-solid fa-pen-to-square transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <!---------------------------------------->
                 </tbody>
             </table>
         </div>
 
-        <div class="w-[95%] flex justify-end">
-            <button id="btnAddRequest" class="pl-6 pr-6 pt-4 pb-4 bg-[#2FA4A9] rounded-3xl shadow-xl hover:bg-[#2B878B] hover:scale-[1.1] durations-300 transition-all">+ Add Request </button>
+        <div class="w-[95%] flex justify-between">
+            <div class="flex justify-star gap-1">
+                <input class="w-full pl-6 py-4 bg-[#2FA4A9] rounded-3xl shadow-xl" id="search" type="text" placeholder="search...">
+                <button class="hover:bg-[#2B878B] rounded-full p-4 bg-[#2FA4A9] shadow-xl">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            
+            <button id="btnAdd" class="pl-6 pr-6 pt-4 pb-4 bg-[#2FA4A9] rounded-3xl shadow-xl hover:bg-[#2B878B] hover:scale-[1.1] durations-300 transition-all">+ Add Request </button>
         </div>
     </div>
 
-    <!--second part: model to add the request-->
-    <div id="addrequest" class=" w-[40%] h-[85%] bg-[#86C4C1] mr-10 rounded-xl shadow-lG flex flex-col">
+    <!--second part------------------------------------------------------------------------------>
+    <div id="message" class="w-md fixed top-4 left-4 mt-4 rounded-xl px-4 py-3 text-sm font-medium bg-red-600 text-white transition-all duration-300">Please fill in all required fields.</div>
+
+    <div id="modal" class="w-[40%] h-[85%] bg-[#86C4C1] mr-10 rounded-xl shadow-lG flex flex-col">
         <h1 class="text-2xl font-bold text-center p-5">Add Request:</h1>
 
         <div class="flex flex-col p-3">
@@ -114,8 +79,8 @@
             <button id="btnCancel" class="w-[50%] p-3 bg-red-400 rounded-2xl hover:scale-[1.05] hover:bg-red-500">Cancel</button>
             <button id="btnSave" class="w-[50%] p-3 bg-[#4CAF93] rounded-2xl hover:scale-[1.05] hover:bg-[#00897B]">Save</button>
         </div>
-
     </div>
+   
     
     <script src="script.js"></script>
 </body>
