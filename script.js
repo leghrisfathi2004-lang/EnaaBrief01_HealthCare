@@ -1,17 +1,20 @@
-//buttons -------------
+//buttons ----------------------------
 let buttonAdd = document.getElementById('btnAdd');
 let buttonSave = document.getElementById('btnSave');
 let buttonCancel = document.getElementById('btnCancel');
 
-//forms --------------------
+//paging logic ------
+let morePages = document.getElementById('pages');
+let buttonPrev = document.getElementById('btnLeft');
+let buttonNext = document.getElementById('btnRight');
+let actualPage = document.getElementById('actualPage');
+
+//forms ------------------------------
 let list = document.getElementById('list');
 let modal = document.getElementById('modal');
 let table = document.getElementById("tbody");
 
-// inputs ----------------------
-
-
-//functions ---------------------------
+//functions ---------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded' , () =>{
     if(!localStorage.getItem('requests'))
@@ -40,6 +43,23 @@ buttonAdd.onclick = () => {
 }
 
 buttonSave.onclick = () =>{
+    if((document.getElementById('fullName').value === '')||(document.getElementById('email').value === '')||(document.getElementById('phone').value === '')||(document.getElementById('reason').value === '')||(document.getElementById('date').value === '')){
+        let msg = document.getElementById('message');
+        msg.classList.toggle('hidden')
+        setTimeout(() => {
+            
+            msg.classList.remove('-translate-x-full', 'opacity-0');
+            msg.classList.add('translate-x-0', 'opacity-100');
+        }, 
+    );
+
+        setTimeout(() => {
+            msg.classList.remove('translate-x-0', 'opacity-100');
+            msg.classList.add('-translate-x-full', 'opacity-0');
+            setTimeout(() => {  msg.classList.toggle('hidden');    }, 500);
+        }, 3000);
+        return;
+    }
     let requests = JSON.parse(localStorage.getItem('requests'));
     let Id = idcount();
     requests.push({
@@ -55,11 +75,68 @@ buttonSave.onclick = () =>{
     console.log('saveeeed')
     list.classList.toggle('hidden');
     modal.classList.toggle('hidden');
+    if((requests.length > 5)&&(morePages.hasAttribute('invisible')))
+        morePages.classList.remove('invisible')
+
 }
 
-function displayP(personnes){
+buttonNext.onclick = () =>{
+    let nbr = Number(localStorage.getItem('page'))
+    let request = JSON.parse(localStorage.getItem('requests'))
+    nbr++;
+    paginate(request, nbr);  
+    actualPage.textContent = nbr;
+    if(buttonPrev.hasAttribute('invisible'))
+        buttonNext.remove('invisible')
+}
+
+buttonPrev.onclick = () =>{
+    let nbr = Number(localStorage.getItem('page'))
+    let request = JSON.parse(localStorage.getItem('requests'))
+    nbr--;
+
+    paginate(request, nbr);
+}
+
+function paginate(tab, pageNumber) {
+    const itemsPerPage = 5;
+    const start = (pageNumber - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    onePage(tab.slice(start, end));
+}
+
+function displayP(reqs){
     table.innerHTML = '';
-    personnes.forEach(el => {
+    let n = reqs.length
+    switch(true){
+        case n == 0:
+            table.innerHTML =  `<tr>
+                                <td colspan="7" class="px-6 py-20 text-center">
+                                <div class="flex flex-col items-center justify-center space-y-3">
+                                    <p class="text-lg font-medium text-[#6DA9A6]">No records found</p>
+                                    <p class="text-gray-500">Try adding a new student to see them here.</p>
+                                </div>
+                                </td>
+                            </tr>`
+            break;
+        case n <= 5:
+            onePage(reqs);
+            break;
+        case n > 5:
+            localStorage.setItem('page', '1');
+            paginate(reqs, 1); 
+            if(morePages.hasAttribute('invisible'))
+                morePages.classList.remove('invisible');
+            
+            if(!buttonPrev.hasAttribute('invisible'))
+                buttonPrev.classList.add('invisible');
+            break;
+    }
+}
+//apply this function whenever click on left or right + page number modifie
+
+function onePage(tab){
+    tab.forEach(el => {
         const tr = document.createElement('tr');
         tr.className = "border-b border-gray-300 hover:bg-[#99D2CF]";
         tr.innerHTML = `<td class="px-6 py-4 align-top">${el.id}</td>
@@ -69,12 +146,10 @@ function displayP(personnes){
                         <td class="px-6 py-4 align-top">${el.reason}</td>
                         <td class="px-6 py-4 align-top">${el.date}</td> 
                         <td  class="text-xl text-center">
-                            <button>
-                                <i class="pr-10 fa-solid fa-trash-can transition-all duration-300 hover:scale-[1.5]"></i>
+                            <button onclick="deleteTr(this)" >
+                                <i class="pr-10 fa-solid fa-trash-can text-red-700 transition-all duration-300 hover:scale-[1.2]"></i>
                             </button>
-                            <button>
-                                <i class="fa-solid fa-pen-to-square transition-all duration-300 hover:scale-[1.5]"></i>
-                            </button>
+                            
                         </td>`;
         table.appendChild(tr);
     });
@@ -91,5 +166,10 @@ function deleteTr(btn){
     let requests = JSON.parse(localStorage.getItem('requests'));
     const tr = btn.closest("tr")
     const indexs = tr.querySelectorAll("td");
-
+    console.log(indexs[0]);
+    requests = requests.filter(rq => rq.id != indexs[0].textContent);
+    localStorage.setItem('requests', JSON.stringify(requests));
+    if((requests.length <= 5)&&(!morePages.hasAttribute('invisible')))
+        morePages.classList.add('invisible')
+    displayP(requests);
 }
