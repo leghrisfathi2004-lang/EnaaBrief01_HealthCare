@@ -8,6 +8,7 @@ let morePages = document.getElementById('pages');
 let buttonPrev = document.getElementById('btnLeft');
 let buttonNext = document.getElementById('btnRight');
 let actualPage = document.getElementById('actualPage');
+let pagenbr = 1;
 
 //forms ------------------------------
 let list = document.getElementById('list');
@@ -22,9 +23,10 @@ document.addEventListener('DOMContentLoaded' , () =>{
 
     if(!localStorage.getItem('id'))
         localStorage.setItem('id', '0');
+
     displayP(JSON.parse(localStorage.getItem('requests')))
-    if(!localStorage.getItem('id'))
-        localStorage.setItem('id', '0')
+
+
 })
 
 buttonCancel.addEventListener('click', () => {
@@ -72,30 +74,37 @@ buttonSave.onclick = () =>{
     })
     displayP(requests);
     localStorage.setItem('requests' ,JSON.stringify(requests));
-    console.log('saveeeed')
     list.classList.toggle('hidden');
     modal.classList.toggle('hidden');
-    if((requests.length > 5)&&(morePages.hasAttribute('invisible')))
+    if((requests.length > 5)&&(morePages.classList.contains('invisible')))
         morePages.classList.remove('invisible')
 
 }
 
-buttonNext.onclick = () =>{
-    let nbr = Number(localStorage.getItem('page'))
-    let request = JSON.parse(localStorage.getItem('requests'))
-    nbr++;
-    paginate(request, nbr);  
-    actualPage.textContent = nbr;
-    if(buttonPrev.hasAttribute('invisible'))
-        buttonNext.remove('invisible')
-}
+buttonNext.addEventListener('click', () =>{
+    let requests = JSON.parse(localStorage.getItem('requests'));
+    let totPages = Math.ceil(requests.length/5);
+    if(buttonPrev.classList.contains('invisible'))
+        buttonPrev.classList.remove('invisible');
+    pagenbr++;
+    if (pagenbr == totPages)
+        buttonNext.classList.add('invisible');
+    table.innerHTML = '';
+    paginate(requests, pagenbr);  
+    actualPage.textContent = pagenbr;
+});
 
 buttonPrev.onclick = () =>{
-    let nbr = Number(localStorage.getItem('page'))
-    let request = JSON.parse(localStorage.getItem('requests'))
-    nbr--;
-
-    paginate(request, nbr);
+    let requests = JSON.parse(localStorage.getItem('requests'));
+    if(buttonNext.classList.contains('invisible'))
+        buttonNext.classList.remove('invisible');
+    pagenbr--;
+    if (pagenbr == 1){
+        buttonPrev.classList.add('invisible')
+    }
+    table.innerHTML = '';
+    paginate(requests, pagenbr);  
+    actualPage.textContent = pagenbr;
 }
 
 function paginate(tab, pageNumber) {
@@ -123,12 +132,10 @@ function displayP(reqs){
             onePage(reqs);
             break;
         case n > 5:
-            localStorage.setItem('page', '1');
-            paginate(reqs, 1); 
-            if(morePages.hasAttribute('invisible'))
+            paginate(reqs, pagenbr); 
+            if(morePages.classList.contains('invisible'))
                 morePages.classList.remove('invisible');
-            
-            if(!buttonPrev.hasAttribute('invisible'))
+            if(!buttonPrev.classList.contains('invisible')&&(pagenbr == 1))
                 buttonPrev.classList.add('invisible');
             break;
     }
@@ -166,10 +173,9 @@ function deleteTr(btn){
     let requests = JSON.parse(localStorage.getItem('requests'));
     const tr = btn.closest("tr")
     const indexs = tr.querySelectorAll("td");
-    console.log(indexs[0]);
     requests = requests.filter(rq => rq.id != indexs[0].textContent);
     localStorage.setItem('requests', JSON.stringify(requests));
-    if((requests.length <= 5)&&(!morePages.hasAttribute('invisible')))
+    if((requests.length <= 5)&&(!morePages.classList.contains('invisible')))
         morePages.classList.add('invisible')
     displayP(requests);
 }

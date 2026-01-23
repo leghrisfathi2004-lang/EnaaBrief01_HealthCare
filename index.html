@@ -14,42 +14,34 @@
     <div id="list" class="h-full flex flex-col justify-center items-center gap-6">
         
         <div class="w-full h-[60%] bg-[#86C4C1] mr-10 rounded-xl shadow-lg flex flex-col justify-between">
-            <table class="w-full text-left rounded-xl text-sm border-[#E5E7EB]">
-                <thead class="bg-[#6DA9A6] text-lg uppercase text-white border-collapse">
-                    <tr>
-                        <th class="px-6 py-4 font-medium rounded-tl-xl">ID</th>
-                        <th class="px-6 py-4 font-medium">Full Name</th>
-                        <th class="px-6 py-4 font-medium">Telephone</th>
-                        <th class="px-6 py-4 font-medium">Email</th>
-                        <th class="px-6 py-4 font-medium">Reason</th>
-                        <th class="px-6 py-4 font-medium">Date</th>
-                        <th class="px-6 py-4 font-medium rounded-tr-xl">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                </tbody>
-            </table>
+                <table class="w-full min-w-[700px] text-left max-w-full text-sm"> 
+                    <thead class="bg-[#6DA9A6] text-lg uppercase text-white">
+                        <tr>
+                            <th class="px-6 py-4 font-medium rounded-tl-xl">ID</th>
+                            <th class="px-6 py-4 font-medium">Full Name</th>
+                            <th class="px-6 py-4 font-medium">Telephone</th>
+                            <th class="px-6 py-4 font-medium">Email</th>
+                            <th class="px-6 py-4 font-medium">Reason</th>
+                            <th class="px-6 py-4 font-medium">Date</th>
+                            <th class="px-6 py-4 font-medium rounded-tr-xl">Action</th>
+                        </tr>
+                    </thead>
 
-            <div id="pages" class=" flex flex-row justify-between items-center">
-                <button id="btnLeft" class="invisible text-3xl py-1 p-1 rounded-xl bg-[#2FA4A9] hover:bg-[#2B878B]"><i class="fa-solid fa-angle-left"></i></button>
-
-                
-                <span id="actualPage" class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#6DA9A6] shadow-sm">1</span>
-                    
-                
-
-                <button id="btnRight" class="text-3xl py-1 p-1 rounded-xl bg-[#2FA4A9] hover:bg-[#2B878B]"><i class="fa-solid fa-angle-right"></i></button>
-            </div>
-        </div>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+    <div id="pages" class="invisible flex flex-row justify-center items-center gap-5 p-4">
+        <button id="btnLeft" class="text-3xl py-1 p-1 rounded-xl bg-[#2FA4A9] hover:bg-[#2B878B]">
+            <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <span id="actualPage" class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#6DA9A6] shadow-sm">1</span>
+        <button id="btnRight" class="text-3xl py-1 p-1 rounded-xl bg-[#2FA4A9] hover:bg-[#2B878B]">
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+    </div>
+</div>
         
-        <div class="w-[95%] flex justify-between">
-            <!--<div class="flex justify-star gap-1">
-                <input class="w-full pl-6 py-4 bg-[#2FA4A9] rounded-3xl shadow-xl text-gray-600" id="search" type="text" placeholder="search...">
-                <button class="hover:bg-[#2B878B] rounded-full p-4 bg-[#2FA4A9] shadow-xl">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>-->
-            
+        <div class="w-[95%] flex justify-end">
             <button id="btnAdd" class="pl-6 pr-6 pt-4 pb-4 bg-[#2FA4A9] rounded-3xl shadow-xl hover:bg-[#2B878B] hover:scale-[1.1] durations-300 transition-all">+ Add Request </button>
         </div>
     </div>
